@@ -7,6 +7,19 @@
 <a href="{{ route('activities.create') }}" style="padding: 5px 10px; background: #007bff; color: white; text-decoration: none;">+ Tambah Kegiatan</a>
 <hr>
 
+<!-- Filter Status -->
+<form method="GET" action="{{ route('activities.index') }}" style="margin-bottom: 15px;">
+    <label for="status">Filter Status:</label>
+    <select name="status" id="status" onchange="this.form.submit()">
+        <option value="" {{ empty($status) ? 'selected' : '' }}>Semua</option>
+        @foreach (['Planned', 'Ongoing', 'Done'] as $option)
+            <option value="{{ $option }}" {{ $status === $option ? 'selected' : '' }}>
+                {{ $option }}
+            </option>
+        @endforeach
+    </select>
+</form>
+
 @forelse ($activities as $activity)
 <article style="margin-bottom: 15px;">
     <h2>

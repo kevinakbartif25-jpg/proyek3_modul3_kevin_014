@@ -1,0 +1,6 @@
+projectKey=modul3-251511014
+serverUrl=http://localhost:9000
+serverVersion=26.9.0.129388
+dashboardUrl=http://localhost:9000/dashboard?id=modul3-251511014
+ceTaskId=fd4df5db-c009-4b69-8ec2-b0fdaea233a2
+ceTaskUrl=http://localhost:9000/api/ce/task?id=fd4df5db-c009-4b69-8ec2-b0fdaea233a2

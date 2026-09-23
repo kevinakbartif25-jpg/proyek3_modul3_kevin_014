@@ -12,8 +12,18 @@ class ActivityController extends Controller
 {
     public function index(): View
     {
-        $activities = Activity::query()->orderBy('activity_date')->get();
-        return view('activities.index', compact('activities'));
+        $status = request()->query('status');
+        $validStatuses = ['Planned', 'Ongoing', 'Done'];
+
+        $activities = Activity::query()
+            ->when(
+                $status && in_array($status, $validStatuses, true),
+                fn ($query) => $query->where('status', $status)
+            )
+            ->orderBy('activity_date')
+            ->get();
+
+        return view('activities.index', compact('activities', 'status'));
     }
 
     public function create(): View
