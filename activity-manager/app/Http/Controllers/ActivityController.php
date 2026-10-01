@@ -66,9 +66,26 @@ class ActivityController extends Controller
 
     public function destroy(Activity $activity): RedirectResponse
     {
-        $activity->delete();
+        $activity->delete(); // soft delete
 
-        return redirect()->route('activities.index')->with('success', 'Kegiatan berhasil dihapus.');
+        return redirect()->route('activities.index')->with('success', 'Kegiatan dipindahkan ke data terhapus.');
+    }
+
+    public function trash(): View
+    {
+        $activities = Activity::onlyTrashed()
+            ->with('category')
+            ->latest('deleted_at')
+            ->paginate(10);
+
+        return view('activities.trash', compact('activities'));
+    }
+
+    public function restore(int $id): RedirectResponse
+    {
+        Activity::onlyTrashed()->findOrFail($id)->restore();
+
+        return redirect()->route('activities.trash')->with('success', 'Kegiatan berhasil dipulihkan.');
     }
 
     public function publish(Activity $activity, ActivityService $service): RedirectResponse

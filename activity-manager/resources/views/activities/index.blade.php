@@ -4,6 +4,8 @@
 <h1>Daftar Kegiatan</h1>
 
 <a href="{{ route('activities.create') }}" style="padding: 5px 10px; background: #007bff; color: white; text-decoration: none;">+ Tambah Kegiatan</a>
+<a href="{{ route('activities.trash') }}" style="margin-left: 10px;">Data Terhapus</a>
+<a href="{{ route('categories.index') }}" style="margin-left: 10px;">Kategori</a>
 <hr>
 
 @if (session('success'))
@@ -70,7 +72,7 @@
     <form action="{{ route('activities.destroy', $activity) }}" method="POST" style="display:inline;">
         @csrf
         @method('DELETE')
-        <button type="submit" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+        <button type="submit" onclick="return confirm('Pindahkan kegiatan ini ke data terhapus?')">Hapus</button>
     </form>
 </article>
 @empty
