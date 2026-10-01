@@ -36,16 +36,24 @@
     </div>
 
     <div>
-        <label for="activity_date">Tanggal:</label>
-        <input
-            type="date"
-            id="activity_date"
-            name="activity_date"
-            value="{{ old('activity_date') }}"
-        >
-        @error('activity_date')
-            <span style="color:red;">{{ $message }}</span>
-        @enderror
+        <label for="location">Lokasi:</label>
+        <input type="text" id="location" name="location" value="{{ old('location') }}">
+        @error('location') <span style="color:red;">{{ $message }}</span> @enderror
+    </div>
+    <div>
+        <label for="start_at">Mulai:</label>
+        <input type="datetime-local" id="start_at" name="start_at" value="{{ old('start_at') }}">
+        @error('start_at') <span style="color:red;">{{ $message }}</span> @enderror
+    </div>
+    <div>
+        <label for="end_at">Selesai:</label>
+        <input type="datetime-local" id="end_at" name="end_at" value="{{ old('end_at') }}">
+        @error('end_at') <span style="color:red;">{{ $message }}</span> @enderror
+    </div>
+    <div>
+        <label for="capacity">Kapasitas:</label>
+        <input type="number" id="capacity" name="capacity" value="{{ old('capacity') }}">
+        @error('capacity') <span style="color:red;">{{ $message }}</span> @enderror
     </div>
 
     <div>

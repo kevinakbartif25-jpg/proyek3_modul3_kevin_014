@@ -3,6 +3,8 @@
 @section('content')
 <h1>Edit Kegiatan</h1>
 
+<p>Status saat ini: <strong>{{ $activity->status }}</strong></p>
+
 <form action="{{ route('activities.update', $activity) }}" method="POST">
     @csrf
     @method('PUT')
@@ -37,14 +39,43 @@
     </div>
 
     <div>
-        <label for="activity_date">Tanggal:</label>
+        <label for="location">Lokasi:</label>
+        <input type="text" id="location" name="location" value="{{ old('location', $activity->location) }}">
+        @error('location')
+            <span style="color:red;">{{ $message }}</span>
+        @enderror
+    </div>
+
+    <div>
+        <label for="start_at">Mulai:</label>
         <input
-            type="date"
-            id="activity_date"
-            name="activity_date"
-            value="{{ old('activity_date', $activity->activity_date->format('Y-m-d')) }}"
+            type="datetime-local"
+            id="start_at"
+            name="start_at"
+            value="{{ old('start_at', $activity->start_at?->format('Y-m-d\TH:i')) }}"
         >
-        @error('activity_date')
+        @error('start_at')
+            <span style="color:red;">{{ $message }}</span>
+        @enderror
+    </div>
+
+    <div>
+        <label for="end_at">Selesai:</label>
+        <input
+            type="datetime-local"
+            id="end_at"
+            name="end_at"
+            value="{{ old('end_at', $activity->end_at?->format('Y-m-d\TH:i')) }}"
+        >
+        @error('end_at')
+            <span style="color:red;">{{ $message }}</span>
+        @enderror
+    </div>
+
+    <div>
+        <label for="capacity">Kapasitas:</label>
+        <input type="number" id="capacity" name="capacity" value="{{ old('capacity', $activity->capacity) }}">
+        @error('capacity')
             <span style="color:red;">{{ $message }}</span>
         @enderror
     </div>
@@ -62,21 +93,6 @@
         @error('category_id')
             <span style="color:red;">{{ $message }}</span>
         @enderror
-    </div>
-
-    <div>
-        <label for="status">Status:</label>
-        <select id="status" name="status">
-            <option value="Planned" @selected($activity->status == 'Planned')>
-                Planned
-            </option>
-            <option value="Ongoing" @selected($activity->status == 'Ongoing')>
-                Ongoing
-            </option>
-            <option value="Done" @selected($activity->status == 'Done')>
-                Done
-            </option>
-        </select>
     </div>
 
     <button type="submit">Perbarui</button>
