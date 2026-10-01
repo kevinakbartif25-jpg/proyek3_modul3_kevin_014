@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->constrained()->restrictOnDelete(); // menggantikan kolom string 'category'
+            $table->string('code', 30)->unique();                                // baru
             $table->string('title', 100);
             $table->text('description')->nullable();
             $table->date('activity_date');
-            $table->string('category', 50);
             $table->string('status', 20)->default('Planned');
             $table->timestamps();
-    });
+        });
     }
 
     /**

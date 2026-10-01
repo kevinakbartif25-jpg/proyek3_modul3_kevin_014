@@ -20,6 +20,14 @@
     </div>
 
     <div>
+        <label for="code">Kode:</label>
+        <input type="text" id="code" name="code" value="{{ old('code') }}">
+        @error('code')
+            <span style="color:red;">{{ $message }}</span>
+        @enderror
+    </div>
+
+    <div>
         <label for="description">Deskripsi:</label>
         <textarea
             id="description"
@@ -41,14 +49,16 @@
     </div>
 
     <div>
-        <label for="category">Kategori:</label>
-        <input
-            type="text"
-            id="category"
-            name="category"
-            value="{{ old('category') }}"
-        >
-        @error('category')
+        <label for="category_id">Kategori:</label>
+        <select id="category_id" name="category_id">
+            <option value="">-- Pilih kategori --</option>
+            @foreach ($categories as $category)
+                <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>
+                    {{ $category->name }}
+                </option>
+            @endforeach
+        </select>
+        @error('category_id')
             <span style="color:red;">{{ $message }}</span>
         @enderror
     </div>

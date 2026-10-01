@@ -7,17 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 class Activity extends Model
 {
     protected $fillable = [
+        'category_id',   // sebelumnya 'category'
+        'code',          // baru
         'title',
         'description',
         'activity_date',
-        'category',
         'status',
+        'datetime',
     ];
 
     protected function casts(): array
     {
         return [
             'activity_date' => 'date',
+            'end_at' => 'datetime',
         ];
     }
-}
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+}   

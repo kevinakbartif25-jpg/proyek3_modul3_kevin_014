@@ -2,59 +2,30 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Activity;
+use App\Models\Category;
+use Illuminate\Database\Seeder;
 
 class ActivitySeeder extends Seeder
 {
     public function run(): void
     {
-        Activity::query()->insert([
-            [
-                'title' => 'Workshop Git Dasar',
-                'description' => 'Latihan kolaborasi repository.',
-                'activity_date' => '2026-10-05',
-                'category' => 'Workshop',
-                'status' => 'Planned',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Seminar Web Quality',
-                'description' => 'Pengenalan maintainability dan testing.',
-                'activity_date' => '2026-10-12',
-                'category' => 'Seminar',
-                'status' => 'Planned',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Pengembangan Text Editor C',
-                'description' => 'Implementasi buffer dan fungsi editing modular.',
-                'activity_date' => '2026-10-15',
-                'category' => 'Proyek',
-                'status' => 'Ongoing',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Kalkulasi Damage Genshin',
-                'description' => 'Optimalisasi build dan perhitungan damage karakter.',
-                'activity_date' => '2026-10-18',
-                'category' => 'Gaming',
-                'status' => 'Done',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Belajar Matematika Diskrit',
-                'description' => 'Latihan soal logika ekuivalensi dan teori himpunan.',
-                'activity_date' => '2026-10-20',
-                'category' => 'Akademik',
-                'status' => 'Planned',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+        $seminar  = Category::where('slug', 'seminar')->firstOrFail();
+        $workshop = Category::where('slug', 'workshop')->firstOrFail();
+
+        for ($i = 1; $i <= 18; $i++) {
+            $isSeminar = $i % 2 === 1;
+
+            Activity::updateOrCreate(
+                ['code' => sprintf('ACT-%03d', $i)],
+                [
+                    'category_id'   => $isSeminar ? $seminar->id : $workshop->id,
+                    'title'         => ($isSeminar ? 'Seminar' : 'Workshop') . " Kegiatan {$i}",
+                    'description'   => "Deskripsi untuk kegiatan nomor {$i}.",
+                    'activity_date' => now()->addDays($i * 3)->toDateString(),
+                    'status'        => $i % 3 === 0 ? 'Done' : 'Planned',
+                ]
+            );
+        }
     }
 }

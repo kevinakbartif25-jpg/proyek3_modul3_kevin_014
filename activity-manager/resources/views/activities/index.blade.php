@@ -27,6 +27,8 @@
             {{ $activity->title }}
         </a>
     </h2>
+
+    <p>Kode: {{ $activity->code }} | Kategori: {{ $activity->category->name }}</p>
     <p>{{ $activity->activity_date->format('d M Y') }} - Status: {{ $activity->status }}</p>
     
     <!-- Tombol Edit -->

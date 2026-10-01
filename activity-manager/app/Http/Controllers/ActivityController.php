@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Activity;
 use App\Http\Requests\StoreActivityRequest;
 use App\Http\Requests\UpdateActivityRequest;
-use Illuminate\View\View;
+use App\Models\Activity;
+use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class ActivityController extends Controller
 {
@@ -16,6 +17,7 @@ class ActivityController extends Controller
         $validStatuses = ['Planned', 'Ongoing', 'Done'];
 
         $activities = Activity::query()
+            ->with('category')
             ->when(
                 $status && in_array($status, $validStatuses, true),
                 fn ($query) => $query->where('status', $status)
@@ -28,7 +30,7 @@ class ActivityController extends Controller
 
     public function create(): View
     {
-        return view('activities.create');
+        return view('activities.create', ['categories' => $this->categoryOptions()]);
     }
 
     public function store(StoreActivityRequest $request): RedirectResponse
@@ -39,12 +41,16 @@ class ActivityController extends Controller
 
     public function show(Activity $activity): View
     {
+        $activity->load('category');
         return view('activities.show', compact('activity'));
     }
 
     public function edit(Activity $activity): View
     {
-        return view('activities.edit', compact('activity'));
+        return view('activities.edit', [
+            'activity' => $activity,
+            'categories' => $this->categoryOptions(),
+        ]);
     }
 
     public function update(UpdateActivityRequest $request, Activity $activity): RedirectResponse
@@ -57,5 +63,10 @@ class ActivityController extends Controller
     {
         $activity->delete();
         return redirect()->route('activities.index')->with('success', 'Kegiatan berhasil dihapus.');
+    }
+
+    private function categoryOptions()
+    {
+        return Category::orderBy('name')->get();
     }
 }
